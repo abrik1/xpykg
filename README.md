@@ -1,10 +1,16 @@
-# xpkg
-xpkg is a simple package manager for Windows XP which installs software for XP(x86 currently) so that users dont have to look for random webpages for software
+## xpkg(XPkg - a script which kinda functions like a package manager)
+xpkg is a script for Windows XP which installs software for XP(x86 currently) so that users dont have to look for random webpages for software. It downloads the setup.exe of the available softwares and then runs the setup.exe and for uninstall where uninstall.exe is saved according to that the program is removed...
 
-# requirements:
+### requirements:
 - python 3.4
 
-# software todo
+#### python libs:
+- json[in python 3.4]
+- requests
+
+**NOTE**: right now it works only
+
+### software todo
 - [ ] Firefox 52.9
 - [ ] Chrome 49
 - [ ] Notepad++ 7.9.2
