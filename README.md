@@ -8,7 +8,7 @@ xpkg is a script for Windows XP which installs software for XP(x86 currently) so
 - json[in python 3.4]
 - requests
 
-**NOTE**: right now it works only
+**NOTE**: right now it works only on XP x86(x64 soon) and drive letter should be C:\
 
 ### software todo
 - [ ] Firefox 52.9
