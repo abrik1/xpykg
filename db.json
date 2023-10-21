@@ -13,5 +13,10 @@
         "version": "9.0",
         "source": "https://ftp.nluug.nl/pub/vim/pc/gvim90.exe",
         "remover": "C:\\Program Files\\Vim\\vim90\\uninstall-gui.exe"
+    },
+    "sublime-text-3": {
+        "version": "3.3211",
+        "source": "https://download.sublimetext.com/Sublime%20Text%20Build%203211%20Setup.exe",
+        "remover": "C:\Program Files\Sublime Text 3\unins000.exe"
     }
 }
