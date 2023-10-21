@@ -11,8 +11,9 @@ xpykg is a script for Windows XP which installs software for XP(x86 currently) s
 **NOTE**: right now it works only on XP x86(x64 soon) and drive letter should be C:\
 
 ### software todo
-- [ ] Firefox 52.9
-- [ ] Chrome 49
-- [ ] Notepad++ 7.9.2
+- [x] Firefox 52.9
+- [ ] Google Chrome, Notepad++, Krita, Audacity, Scratch 1.4/2.0, Opera, Sublime Text 2/3, LibreOffice, OpenOffice, Vim, Emacs and some antiviruses atleast for now
 
-and more! right now only free programs are there
+# Pull Request rules:
+
+- **NOTE**: Please do not add malicious software and no cracks...
