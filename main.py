@@ -1,5 +1,5 @@
 '''
-xpykg: a script to automate install/update/uninstall for Windows XP  
+xpykg: a script to automate install/update/uninstall for Windows XP
 '''
 
 from json import loads, dumps
@@ -13,7 +13,7 @@ xpkg_version = "0.1"
 
 def sync_database():
     '''
-    sync_database(): downloads database from github and dumps to Program Files  
+    sync_database(): downloads database from github and dumps to Program Files
     '''
     if isfile("C:\\Program Files\\xpykg\\db.json") == False:
         if isdir("C:\\Program Files\\xypkg") == False:
@@ -29,14 +29,14 @@ def sync_database():
                 print("[xpykg:error]: database failed to download")
                 xpkg_db.close()
                 exit(1)
-        
+
         print("[xpykg:info]: database written")
     else:
         with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpkg_db:
             try:
                 info = get("https://raw.githubusercontent.com/abrik1/xpkg/main/db.json")
                 if xpkg_db.read() == info.content.decode('utf-8'):
-                    print("[xpkg:info]: database up to date")
+                    print("[xpykg:info]: database up to date")
                     xpkg_db.close()
                 else:
                     xpkg_db.seek(0)
@@ -48,7 +48,7 @@ def sync_database():
                 print("[xpykg:error]: database failed to download")
                 xpkg_db.close()
                 exit(1)
-        
+
 def list_packages():
     '''
     list_packages(): shows the list of packages
@@ -61,7 +61,34 @@ def list_packages():
         db.close()
     else:
         print("[xpykg:error]: package index not found")
-        
+
+def search_packages(query: str):
+    '''
+    search_packages(query: str): search packages matching to query
+    '''
+
+    if isfile("C:\\Program Files\\xpykg\\db.json") == True:
+        with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
+            contents = loads(db.read())
+            count = 0
+            for i in list(contents.keys()):
+                matching = []
+                for j in range(0, len(query)):
+                    if query[j] in i:
+                        matching.append(query[j])
+                    else:
+                        continue
+
+                if len(matching) == len(query):
+                    count = count + 1
+                    print("{} {}".format(i, contents[i]['version']))
+
+            if count == 0:
+                print("[xpykg:error] no pkgs similar to {}".format(query))    
+        db.close()
+    else:
+        print("[xpykg:error]: database not found")
+
 if __name__ == "__main__":
     try:
         if argv[1] in ["-h", "help", "--help"]:
@@ -81,10 +108,12 @@ version: show xpkg version''')
             sync_database()
         elif argv[1] in ["-l", "list", "--list"]:
             list_packages()
+        elif argv[1] in ["-s", "search", "--search"] and len(argv) == 3:
+            search_packages(argv[2])
         else:
-            print("[xpykg:error]: invalid argument")
+            print("[xpykg:error]: invalid argument or not sufficient arguements")
     except IndexError:
-        print("[xpykg:error]: invalid argument")
+        print("[xpykg:error]: invalid argument or not sufficient arguments")
     except KeyboardInterrupt:
         print("[xpykg:error]: keyboard exit detected")
         exit(1)
