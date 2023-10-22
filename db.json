@@ -17,6 +17,6 @@
     "sublime-text-3": {
         "version": "3.3211",
         "source": "https://download.sublimetext.com/Sublime%20Text%20Build%203211%20Setup.exe",
-        "remover": "C:\Program Files\Sublime Text 3\unins000.exe"
+        "remover": "C:\\Program Files\\Sublime Text 3\\unins000.exe"
     }
 }
