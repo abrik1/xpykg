@@ -8,6 +8,7 @@ from requests.exceptions import MissingSchema, ConnectionError, ConnectTimeout
 from sys import argv, exit
 from os import system, mkdir, getenv
 from os.path import isfile, isdir
+from ast import literal_eval
 
 xpkg_version = "0.1"
 
@@ -56,7 +57,10 @@ def list_packages():
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
             for i in list(contents.keys()):
-                print("{} {}".format(i , contents[i]['version']))
+                if is_installed(i) == True:
+                    print("{} {} [installed by xpykg]".format(i , contents[i]['version']))
+                else:
+                    print("{} {}".format(i, contents[i]['version']))
         db.close()
     else:
         print("[xpykg:error]: package index not found.. maybe sync the database to fix it")
@@ -80,7 +84,10 @@ def search_packages(query: str):
 
                 if len(matching) == len(query):
                     count = count + 1
-                    print("{} {}".format(i, contents[i]['version']))
+                    if is_installed(i) == True:
+                        print("{} {} [installed by xpykg]".format(i, contents[i]['version']))
+                    else:
+                        print("{} {}".format(i, contents[i]['version']))
 
             if count == 0:
                 print("[xpykg:error] no pkgs similar to {}".format(query))            
@@ -147,12 +154,29 @@ def append_to_install(pkgname: str, version: str, remover: str):
     '''
     if isfile("C:\\Program Files\\xpykg\\installed-packages") == False:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'w') as db:
-            db.write("{} {} {}\n".format(pkgname, version, remover))
+            db.write("{}\n".format([pkgname, version, remover]))
         db.close()
     else:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'a+') as db:
-            db.write("{} {} {}\n".format(pkgname, version, remover))
+            db.write("{}\n".format([pkgname, version, remover]))
         db.close()
+
+def is_installed(pkgname: str):
+    '''
+    is_installed(pkgname) -> True/False.. this function determines that a package is installed or not
+    '''
+    if isfile("C:\\Program Files\\xpykg\\installed-packages") == True:
+        with open("C:\\Program Files\\xpykg\\installed-packages", 'r') as database:
+            contents = database.read()
+            for i in contents.splitlines():
+                if literal_eval(i)[0] == pkgname:
+                    database.close()
+                    return True
+                
+        database.close()
+        return False
+    else:
+        return False
         
 if __name__ == "__main__":
     try:
