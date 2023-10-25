@@ -6,7 +6,7 @@ from json import loads, dumps
 from requests import get
 from requests.exceptions import MissingSchema, ConnectionError, ConnectTimeout
 from sys import argv, exit
-from os import system, mkdir, getenv
+from os import system, mkdir, getenv, chdir
 from os.path import isfile, isdir
 from ast import literal_eval
 
@@ -177,6 +177,57 @@ def is_installed(pkgname: str):
         return False
     else:
         return False
+
+def arr_to_str(arr, optchar: str):
+    '''
+    arr_to_str().. converts
+    '''
+    nstr = ""
+    for i in arr:
+        nstr = nstr+i+optchar
+
+    return nstr
+
+def uninstall_package(pkgname: str):
+    '''
+    uninstall_package(pkgname): remove pkgname if installed by xpykg  
+    '''
+    if is_installed(pkgname) == True:
+        with open("C:\\Program Files\\xpykg\installed-packages", 'r+') as ipkg:
+            contents = ipkg.read().splitlines()
+            index = 0
+            remover = ""
+            for i in contents:
+                if literal_eval(i)[0] == pkgname:
+                    index = contents.index(i)
+                    remover = literal_eval(i)[2]
+                    break
+                
+            remove = remover.split("\\")
+            remove.pop(len(remove)-1)
+            chdir(arr_to_str(remove, "\\"))
+            
+            remover = remover.split("\\")[len(remover.split("\\"))-1]
+            
+            if system(remover) == 0:
+                contents.pop(index)
+                ncontent = ""
+                for j in contents:
+                    ncontent = ncontent+j
+                
+                ipkg.seek(0)
+                ipkg.write(ncontent)
+                ipkg.truncate()
+                ipkg.close()
+                print("[xpkg:sucess]: package {} removed".format(pkgname))
+                return 0
+            else:
+                print("[xpkg:error]: {} not removed".format(pkgname))
+                ipkg.close()
+                return 1 
+    else:
+        print("[xpykg:error]: package {} not installed".format(pkgname))
+        return 1
         
 if __name__ == "__main__":
     try:
@@ -202,6 +253,9 @@ version: show xpkg version''')
         elif argv[1] in ["-i", "install", "--install"]:
             if len(argv) == 3:
                 install_package(argv[2])
+        elif argv[1] in ["-u", "uninstall", "--uninstall"]:
+            if len(argv) == 3:
+                uninstall_package(argv[2])
         else:
             print("[xpykg:error]: invalid argument or not sufficient arguements")
     except IndexError:
