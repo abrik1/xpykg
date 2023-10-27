@@ -10,6 +10,14 @@ xpykg is a script for Windows XP which installs software for XP(x86 currently) s
 
 **NOTE**: right now it works only on XP x86(x64 soon) and drive letter should be C:\
 
+### todo:
+- [x] search works
+- [x] sync works
+- [x] list works
+- [x] install(msi/exe) works
+- [ ] uninstall(nullsoft uninstallers need patching)
+- [ ] upgrade    
+
 ### software todo
 - [ ] right now some FOSS Apps and antiviruses
 
