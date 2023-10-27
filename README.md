@@ -18,8 +18,8 @@ xpykg is a script for Windows XP which installs software for XP(x86 currently) s
 - [ ] uninstall(nullsoft uninstallers need patching)
 - [ ] upgrade    
 
-### software todo
-- [ ] right now some FOSS Apps and antiviruses
+### software:
+see packages.csv
 
 # Pull Request rules:
 
