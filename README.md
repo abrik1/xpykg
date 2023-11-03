@@ -21,6 +21,5 @@ xpykg is a script for Windows XP which installs software for XP(x86 currently) s
 ### software:
 see packages.csv
 
-# Pull Request rules:
-
-- **NOTE**: Please do not add malicious software and no cracks...
+## docs:
+see github's wiki
