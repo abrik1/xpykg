@@ -10,9 +10,9 @@ from os import system, mkdir, getenv, chdir
 from os.path import isfile, isdir
 from ast import literal_eval
 
-xpkg_version = "0.1"
+xpykg_version = "0.1"
 
-def sync_database():
+def sync_database(): 
     '''
     sync_database(): downloads database from github and dumps to Program Files  
     '''
@@ -21,32 +21,32 @@ def sync_database():
             mkdir("C:\\Program Files\\xpykg")
 
         print("[xpykg:info]: downloading database")
-        with open("C:\\Program Files\\xpykg\\db.json", 'w') as xpkg_db:
+        with open("C:\\Program Files\\xpykg\\db.json", 'w') as xpykg_db:
             try:
                 info = get("https://raw.githubusercontent.com/abrik1/xpykg/main/db.json")
-                xpkg_db.write(info.content.decode('utf-8'))
-                xpkg_db.close()
+                xpykg_db.write(info.content.decode('utf-8'))
+                xpykg_db.close()
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
                 print("[xpykg:error]: database failed to download.. maybe try again later")
-                xpkg_db.close()
+                xpykg_db.close()
                 exit(1)
         print("[xpykg:info]: database written")
     else:
-        with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpkg_db:
+        with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpykg_db:
             try:
-                info = get("https://raw.githubusercontent.com/abrik1/xpkg/main/db.json")
-                if xpkg_db.read() == info.content.decode('utf-8'):
+                info = get("https://raw.githubusercontent.com/abrik1/xpykg/main/db.json")
+                if xpykg_db.read() == info.content.decode('utf-8'):
                     print("[xpykg:info]: database up to date")
-                    xpkg_db.close()
+                    xpykg_db.close()
                 else:
-                    xpkg_db.seek(0)
-                    xpkg_db.write(info.content.decode('utf-8'))
-                    xpkg_db.truncate()
-                    xpkg_db.close()
-                    print("[xpkg:info]: database updated")
+                    xpykg_db.seek(0)
+                    xpykg_db.write(info.content.decode('utf-8'))
+                    xpykg_db.truncate()
+                    xpykg_db.close()
+                    print("[xpykg:info]: database updated")
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
                 print("[xpykg:error]: database failed to download.. maybe try again later")
-                xpkg_db.close()
+                xpykg_db.close()
                 exit(1)
         
 def list_packages():
@@ -109,12 +109,12 @@ def install_package(package: str):
                 db.close()
                 exit(1)
 
-            print("[xpkg:info]: downloading setup.exe for package {}".format(package))
+            print("[xpykg:info]: downloading setup.exe for package {}".format(package))
              
             try:
                 exe_contents = get(contents[package]['source'])
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
-                print("[xpkg:error]: setup.exe for package {} failed to download.. maybe try again later".format(package))
+                print("[xpykg:error]: setup.exe for package {} failed to download.. maybe try again later".format(package))
                 exit(1)
 
             # Windows executables can either be in .exe or in .msi 
@@ -193,7 +193,7 @@ def uninstall_package(pkgname: str):
     uninstall_package(pkgname): remove pkgname if installed by xpykg  
     '''
     if is_installed(pkgname) == True:
-        with open("C:\\Program Files\\xpykg\installed-packages", 'r+') as ipkg:
+        with open("C:\\Program Files\\xpykg\\installed-packages", 'r+') as ipkg:
             contents = ipkg.read().splitlines()
             index = 0
             remover = ""
@@ -219,10 +219,10 @@ def uninstall_package(pkgname: str):
                 ipkg.write(ncontent)
                 ipkg.truncate()
                 ipkg.close()
-                print("[xpkg:sucess]: package {} removed".format(pkgname))
+                print("[xpykg:sucess]: package {} removed".format(pkgname))
                 return 0
             else:
-                print("[xpkg:error]: {} not removed".format(pkgname))
+                print("[xpykg:error]: {} not removed".format(pkgname))
                 ipkg.close()
                 return 1 
     else:
@@ -240,10 +240,10 @@ list: show all the available apps
 search: search <pkg>
 sync: sync software databases
 uninstall: uninstall <pkg>
-upgrade: upgrade packages installed using xpkg
-version: show xpkg version''')
+upgrade: upgrade packages installed using xpykg
+version: show xpykg version''')
         elif argv[1] in ["-v", "version", "--version"]:
-            print("[xpkg:version]: {}".format(xpkg_version))
+            print("[xpykg:version]: {}".format(xpykg_version))
         elif argv[1] in ["-S", "sync", "--sync"]:
             sync_database()
         elif argv[1] in ["-l", "list", "--list"]:
