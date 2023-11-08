@@ -2,7 +2,7 @@
     "firefox": {
 	    "version": "52.0.9",
 	    "source": "https://ftp.mozilla.org/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox%20Setup%2052.9.0esr.exe",
-	    "remover": "C:\\Program Files\\Mozilla\\uninstall\\helper.exe"
+	    "remover": "C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe"
     },
     "emacs": {
         "version": "27.2",
