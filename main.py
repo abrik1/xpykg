@@ -228,7 +228,22 @@ def uninstall_package(pkgname: str):
     else:
         print("[xpykg:error]: package {} not installed".format(pkgname))
         return 1
-        
+
+def vtoi(version: str):
+    '''
+    vtoi(version): return version to an integer.. 22.10 -> 2210
+    '''
+    
+    ver = ""
+
+    for i in version:
+        try:
+            ver = ver+str(int(i))
+        except ValueError:
+            continue
+
+    return int(ver)
+
 if __name__ == "__main__":
     try:
         if argv[1] in ["-h", "help", "--help"]:
