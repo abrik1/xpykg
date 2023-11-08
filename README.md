@@ -7,6 +7,7 @@ xpykg is a script for Windows XP which installs software for XP(x86 currently) s
 #### python libs:
 - json[in python 3.4]
 - requests 2.20 or something
+- colorama[colors are cool]
 
 **NOTE**: right now it works only on XP x86(x64 soon) and drive letter should be C:\
 
