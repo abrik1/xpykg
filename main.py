@@ -1,5 +1,5 @@
 '''
-xpykg: a script to automate install/update/uninstall for Windows XP  
+xpykg: a script to automate install/update/uninstall for Windows XP
 '''
 
 from json import loads, dumps
@@ -9,28 +9,30 @@ from sys import argv, exit
 from os import system, mkdir, getenv, chdir
 from os.path import isfile, isdir
 from ast import literal_eval
+from colorama import init, Fore
 
 xpykg_version = "0.1"
+init()
 
-def sync_database(): 
+def sync_database():
     '''
-    sync_database(): downloads database from github and dumps to Program Files  
+    sync_database(): downloads database from github and dumps to Program Files
     '''
     if isfile("C:\\Program Files\\xpykg\\db.json") == False:
         if isdir("C:\\Program Files\\xpykg") == False:
             mkdir("C:\\Program Files\\xpykg")
 
-        print("[xpykg:info]: downloading database")
+        print("{}[xpykg:info]{}: downloading database".format(BLUE, RESET))
         with open("C:\\Program Files\\xpykg\\db.json", 'w') as xpykg_db:
             try:
                 info = get("https://raw.githubusercontent.com/abrik1/xpykg/main/db.json")
                 xpykg_db.write(info.content.decode('utf-8'))
                 xpykg_db.close()
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
-                print("[xpykg:error]: database failed to download.. maybe try again later")
+                print("{}[xpykg:error]{}: database failed to download.. maybe try again later".format(RED, RESET))
                 xpykg_db.close()
                 exit(1)
-        print("[xpykg:info]: database written")
+        print("{}[xpykg:sucess]{}: database written".format(GREEN, RESET))
     else:
         with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpykg_db:
             try:
@@ -48,7 +50,7 @@ def sync_database():
                 print("[xpykg:error]: database failed to download.. maybe try again later")
                 xpykg_db.close()
                 exit(1)
-        
+
 def list_packages():
     '''
     list_packages(): shows the list of packages
@@ -67,7 +69,7 @@ def list_packages():
 
 def search_packages(query: str):
     '''
-    search_packages(query: str): search packages matching to query  
+    search_packages(query: str): search packages matching to query
     '''
 
     if isfile("C:\\Program Files\\xpykg\\db.json") == True:
@@ -90,34 +92,34 @@ def search_packages(query: str):
                         print("{} {}".format(i, contents[i]['version']))
 
             if count == 0:
-                print("[xpykg:error] no pkgs similar to {}".format(query))            
+                print("[xpykg:error] no pkgs similar to {}".format(query))
         db.close()
     else:
         print("[xpykg:error]: database not found.. maybe sync it.")
 
 def install_package(package: str):
     '''
-    install_package(package): install package to  
+    install_package(package): install package to
     '''
 
     if isfile("C:\\Program Files\\xpykg\\db.json") == True:
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
-            
+
             if package not in list(contents.keys()):
                 print("[xpykg:error] package {} not found in database.. maybe sync database or search it".format(package))
                 db.close()
                 exit(1)
 
             print("[xpykg:info]: downloading setup.exe for package {}".format(package))
-             
+
             try:
                 exe_contents = get(contents[package]['source'])
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
                 print("[xpykg:error]: setup.exe for package {} failed to download.. maybe try again later".format(package))
                 exit(1)
 
-            # Windows executables can either be in .exe or in .msi 
+            # Windows executables can either be in .exe or in .msi
             # the code below determines the source file is an .exe or a .msi and saves according to it
 
             if contents[package]['source'].split('.')[len(contents[package]['source'].split('.'))-1] == 'exe':
@@ -133,7 +135,7 @@ def install_package(package: str):
                     print("[xpykg:sucess]: {} installed sucesfully".format(package))
                     append_to_install(package, contents[package]['version'], contents[package]['remover'])
                     exit(0)
-                    
+
             elif contents[package]['source'].split('.')[len(contents[package].split('.'))-1] == 'msi':
                 with open("{}\\setup.msi".format(getenv("Temp")), 'wb') as setup:
                     setup.write(exe_contents.content)
@@ -172,7 +174,7 @@ def is_installed(pkgname: str):
                 if literal_eval(i)[0] == pkgname:
                     database.close()
                     return True
-                
+
         database.close()
         return False
     else:
@@ -190,7 +192,7 @@ def arr_to_str(arr, optchar: str):
 
 def uninstall_package(pkgname: str):
     '''
-    uninstall_package(pkgname): remove pkgname if installed by xpykg  
+    uninstall_package(pkgname): remove pkgname if installed by xpykg
     '''
     if is_installed(pkgname) == True:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'r+') as ipkg:
@@ -202,19 +204,19 @@ def uninstall_package(pkgname: str):
                     index = contents.index(i)
                     remover = literal_eval(i)[2]
                     break
-                
+
             remove = remover.split("\\")
             remove.pop(len(remove)-1)
             chdir(arr_to_str(remove, "\\"))
-            
+
             remover = remover.split("\\")[len(remover.split("\\"))-1]
-            
+
             if system(remover) == 0:
                 contents.pop(index)
                 ncontent = ""
                 for j in contents:
                     ncontent = ncontent+j
-                
+
                 ipkg.seek(0)
                 ipkg.write(ncontent)
                 ipkg.truncate()
@@ -224,7 +226,7 @@ def uninstall_package(pkgname: str):
             else:
                 print("[xpykg:error]: {} not removed".format(pkgname))
                 ipkg.close()
-                return 1 
+                return 1
     else:
         print("[xpykg:error]: package {} not installed".format(pkgname))
         return 1
@@ -233,7 +235,7 @@ def vtoi(version: str):
     '''
     vtoi(version): return version to an integer.. 22.10 -> 2210
     '''
-    
+
     ver = ""
 
     for i in version:
