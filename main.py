@@ -28,11 +28,13 @@ def sync_database():
                 info = get("https://raw.githubusercontent.com/abrik1/xpykg/main/db.json")
                 xpykg_db.write(info.content.decode('utf-8'))
                 xpykg_db.close()
+                return 0
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
                 print("{}{}[xpykg:error]{}: database failed to download.. maybe try again later".format(Style.BRIGHT ,Fore.RED, Fore.RESET))
                 xpykg_db.close()
-                exit(1)
+                return 1
         print("{}{}[xpykg:sucess]:{} database written".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
+        return 0
     else:
         with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpykg_db:
             try:
@@ -40,16 +42,18 @@ def sync_database():
                 if xpykg_db.read() == info.content.decode('utf-8'):
                     print("{}{}[xpykg:note]:{} database up to date".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
                     xpykg_db.close()
+                    return 0
                 else:
                     xpykg_db.seek(0)
                     xpykg_db.write(info.content.decode('utf-8'))
                     xpykg_db.truncate()
                     xpykg_db.close()
                     print("{}{}[xpykg:sucess]:{} database updated".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
+                    return 0
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
                 print("{}{}[xpykg:error]:{} database failed to download.. maybe try again later".format(Style.BRIGHT, Fore.RED, Fore.RESET))
                 xpykg_db.close()
-                exit(1)
+                return 1
         
 def list_packages():
     '''
@@ -109,7 +113,7 @@ def install_package(package: str):
             if package not in list(contents.keys()):
                 print("{}{}[xpykg:error]:{} package {}{}{} not found in database.. maybe sync database or search it".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
                 db.close()
-                exit(1)
+                return 1
 
             print("{}{}[xpykg:info]:{} downloading setup.exe for package {}{}{}".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
              
@@ -117,7 +121,7 @@ def install_package(package: str):
                 exe_contents = get(contents[package]['source'])
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
                 print("{}{}[xpykg:error]:{} setup.exe for package {}{}{} failed to download.. maybe try again later".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
-                exit(1)
+                return 1
 
             # Windows executables can either be in .exe or in .msi 
             # the code below determines the source file is an .exe or a .msi and saves according to it
@@ -130,11 +134,11 @@ def install_package(package: str):
                 print("[xpykg:note]: running installer for package {}".format(package))
                 if system("{}\\setup.exe".format(getenv("Temp"))) != 0:
                     print("{}{}[xpykg:error]:{} {}{}{} failed to install".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
-                    exit(1)
+                    return 1
                 else:
                     print("{}{}[xpykg:sucess]:{} {}{}{} instaled sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW,package, Fore.RESET))
                     append_to_install(package, contents[package]['version'], contents[package]['remover'])
-                    exit(0)
+                    return 0
                     
             elif contents[package]['source'].split('.')[len(contents[package].split('.'))-1] == 'msi':
                 with open("{}\\setup.msi".format(getenv("Temp")), 'wb') as setup:
@@ -143,11 +147,11 @@ def install_package(package: str):
 
                 if system("{}\\setup.msi".format(getenv("Temp"))) != 0:
                     print("{}{}[xpykg:error]:{} {}{}{} failed to install".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
-                    exit(1)
+                    return 1
                 else:
                     print("{}{}[xpykg:sucess]:{} {}{}{} instaled sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW,package, Fore.RESET))
                     append_to_install(package, contents[package]['version'], contents[package]['remover'])
-                    exit(0)
+                    return 0
     else:
         print("{}{}[xpykg:error]:{} package index not found.. maybe run sync".format(Style.BRIGHT, Fore.RED, Fore.RESET))
 
@@ -180,6 +184,21 @@ def is_installed(pkgname: str):
         return False
     else:
         return False
+
+def get_installed_package_version(pkgname: str):
+    '''
+    get_installed_package_version(pkgname).. if pkgname is installed by xpykg then return which version is installed by xpykg
+    '''
+
+    if is_installed(pkgname) == True:
+        with open("C:\\Program Files\\xpykg\\installed-packages", 'r') as database:
+            contents = database.read().splitlines()
+            for i in contents:
+                if literal_eval(i)[0] == pkgname:
+                    database.close()
+                    return literal_eval(i)[1] # good output
+    else:
+        return 1 # bad output
 
 def arr_to_str(arr, optchar: str):
     '''
@@ -247,6 +266,38 @@ def vtoi(version: str):
 
     return int(ver)
 
+def upgrade_packages():
+    '''
+    upgrade_packages(): this function is the main upgrade function for xpykg
+    '''
+    print("{}{}[xpykg:note]:{} updating database".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
+
+    if sync_database() != 0:
+        print("{}{}[xpykg:error]:{} database failed to sync".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+        return 1
+    
+    version_list = []
+    version = []
+    pkgs_fail_to_upgrade = []
+
+    with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
+        contents = loads(db.read())
+
+        for i in list(contents.keys()):
+            if is_installed(i) == True and vtoi(contents[i]['version']) > vtoi(get_installed_package_version(i)):
+                version_list.append(i)
+                version.append(contents[i]['version'])
+
+    db.close()
+
+    if len(version_list) == 0:
+        print("{}{}[xpykg:info]:{} all packages are up to date".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
+        return 0
+    else:
+        print("{}{}[xpykg:info]:{} these packages will be upgraded".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
+        for i in version_list:
+            print("[-] {} {}{}{} -> {}{}{}".format(i, Fore.RED, get_installed_package_version(i), Fore.RESET, Fore.GREEN, version[version_list.index(i)], Fore.RESET))
+
 if __name__ == "__main__":
     try:
         if argv[1] in ["-h", "help", "--help"]:
@@ -274,10 +325,11 @@ version: show xpykg version''')
         elif argv[1] in ["-u", "uninstall", "--uninstall"]:
             if len(argv) == 3:
                 uninstall_package(argv[2])
+        elif argv[1] in ["-U", "upgrade", "--upgrade"]:
+            upgrade_packages()
         else:
             print("{}{}[xpykg:error]:{} invalid argument or not sufficient arguements".format(Style.BRIGHT, Fore.RED, Fore.RESET))
     except IndexError:
-        print("{}{}[xpykg:error]{}: invalid argument or not sufficient arguments".format(Style.BRIGHT, Fore.RED ,Fore.RESET))
+        print("{}{}[xpykg:error]:{} invalid argument or not sufficient arguments".format(Style.BRIGHT, Fore.RED ,Fore.RESET))
     except KeyboardInterrupt:
         print("{}{}[xpykg:error]:{} keyboard exit detected".format(Style.BRIGHT, Fore.RED, Fore.RESET))
-        exit(1)
