@@ -18,5 +18,10 @@
         "version": "3.3211",
         "source": "https://download.sublimetext.com/Sublime%20Text%20Build%203211%20Setup.exe",
         "remover": "C:\\Program Files\\Sublime Text 3\\unins000.exe"
-    }
+    },
+  "7zip": {
+    "version": "23.01",
+    "source": "https://www.7-zip.org/a/7z2301.exe",
+    "remover": "C:\\Program Files\\7-Zip\\Uninstall.exe"
+  }
 }
