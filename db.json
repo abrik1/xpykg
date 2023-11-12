@@ -23,5 +23,10 @@
     "version": "23.01",
     "source": "https://www.7-zip.org/a/7z2301.exe",
     "remover": "C:\\Program Files\\7-Zip\\Uninstall.exe"
+  },
+  "peazip": {
+    "version": "9.5",
+    "source": "https://github.com/peazip/PeaZip/releases/download/9.5.0/peazip-9.5.0.WINDOWS.exe",
+    "remover": "C:\\Program Files\\Peazip\\unins000.exe"
   }
 }
