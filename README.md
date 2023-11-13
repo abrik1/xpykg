@@ -16,7 +16,7 @@ xpykg is a script for Windows XP which installs software for XP(x86 currently) s
 - [x] sync works
 - [x] list works
 - [x] install(msi/exe) works
-- [x] uninstall(nullsoft uninstallers need patching)
+- [x] uninstall(nullsoft and uninstallers which need wmic to parse installers)
 - [ ] upgrade(can detect which packages shall be upgraded)
 
 ### software:
