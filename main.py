@@ -161,11 +161,11 @@ def append_to_install(pkgname: str, version: str, remover: str):
     '''
     if isfile("C:\\Program Files\\xpykg\\installed-packages") == False:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'w') as db:
-            db.write("{}\n".format([pkgname, version, remover]))
+            db.write("\n{}".format([pkgname, version, remover]))
         db.close()
     else:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'a+') as db:
-            db.write("{}\n".format([pkgname, version, remover]))
+            db.write("\n{}".format([pkgname, version, remover]))
         db.close()
 
 def is_installed(pkgname: str):
@@ -278,7 +278,6 @@ def upgrade_packages():
     
     version_list = []
     version = []
-    pkgs_fail_to_upgrade = []
 
     with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
         contents = loads(db.read())
@@ -297,6 +296,12 @@ def upgrade_packages():
         print("{}{}[xpykg:info]:{} these packages will be upgraded".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
         for i in version_list:
             print("[-] {} {}{}{} -> {}{}{}".format(i, Fore.RED, get_installed_package_version(i), Fore.RESET, Fore.GREEN, version[version_list.index(i)], Fore.RESET))
+
+    choice = input("{}{}[xpykg:input]:{} proceed[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET))
+    
+    if choice not in ["y", "yes", "Y"]:
+        print("{}{}[xpykg:error]:{} user decided not to proceed.".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+        return 1
 
 if __name__ == "__main__":
     try:
@@ -322,9 +327,15 @@ version: show xpykg version''')
         elif argv[1] in ["-i", "install", "--install"]:
             if len(argv) == 3:
                 install_package(argv[2])
+            else:
+                for i in range(2, len(argv)):
+                    install_package(argv[i])
         elif argv[1] in ["-u", "uninstall", "--uninstall"]:
             if len(argv) == 3:
                 uninstall_package(argv[2])
+            else:
+                for i in range(2, len(argv)):
+                    print(argv[i])
         elif argv[1] in ["-U", "upgrade", "--upgrade"]:
             upgrade_packages()
         else:
