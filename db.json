@@ -1,18 +1,20 @@
 {
     "firefox": {
-	    "version": "52.0.9",
-	    "source": "https://ftp.mozilla.org/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox%20Setup%2052.9.0esr.exe",
-	    "remover": "C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe"
+	"version": "52.0.9",
+	 "source": "https://ftp.mozilla.org/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox%20Setup%2052.9.0esr.exe",
+	 "remover": "C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe"
     },
     "emacs": {
         "version": "27.2",
         "source": "http://ftp.gnu.org/gnu/emacs/windows/emacs-27/emacs-27.2-i686-installer.exe",
-        "remover": "C:\\Program Files\\Emacs\\Uninstall.exe"
+        "remover": "C:\\Program Files\\Emacs\\Uninstall.exe",
+	"isUninstallerByNullsoft":  true
     },
     "vim": {
         "version": "9.0",
         "source": "https://ftp.nluug.nl/pub/vim/pc/gvim90.exe",
-        "remover": "C:\\Program Files\\Vim\\vim90\\uninstall-gui.exe"
+        "remover": "C:\\Program Files\\Vim\\vim90\\uninstall-gui.exe",
+	"isUninstallerByNullsoft":  true
     },
     "sublime-text-3": {
         "version": "3.3211",
