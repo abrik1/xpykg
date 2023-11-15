@@ -105,7 +105,7 @@ def install_package(package: str):
     '''
     install_package(package): install package to  
     '''
-
+    
     if isfile("C:\\Program Files\\xpykg\\db.json") == True:
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
@@ -126,46 +126,50 @@ def install_package(package: str):
             # Windows executables can either be in .exe or in .msi 
             # the code below determines the source file is an .exe or a .msi and saves according to it
 
+            status_code = 0 # system() will take over this variable
+
+            print("{}{}[xpykg:note]:{} running installer for package {}{}{}".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+
             if contents[package]['source'].split('.')[len(contents[package]['source'].split('.'))-1] == 'exe':
                 with open("{}\\setup.exe".format(getenv("Temp")), 'wb') as setup:
                     setup.write(exe_contents.content)
-                setup.close()
+                setup.close() 
+                status_code = system("{}\\setup.exe".format(getenv("Temp")))
 
-                print("[xpykg:note]: running installer for package {}".format(package))
-                if system("{}\\setup.exe".format(getenv("Temp"))) != 0:
-                    print("{}{}[xpykg:error]:{} {}{}{} failed to install".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
-                    return 1
-                else:
-                    print("{}{}[xpykg:sucess]:{} {}{}{} instaled sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW,package, Fore.RESET))
-                    append_to_install(package, contents[package]['version'], contents[package]['remover'])
-                    return 0
-                    
             elif contents[package]['source'].split('.')[len(contents[package].split('.'))-1] == 'msi':
                 with open("{}\\setup.msi".format(getenv("Temp")), 'wb') as setup:
                     setup.write(exe_contents.content)
                 setup.close()
 
-                if system("{}\\setup.msi".format(getenv("Temp"))) != 0:
-                    print("{}{}[xpykg:error]:{} {}{}{} failed to install".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
-                    return 1
-                else:
-                    print("{}{}[xpykg:sucess]:{} {}{}{} instaled sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW,package, Fore.RESET))
-                    append_to_install(package, contents[package]['version'], contents[package]['remover'])
-                    return 0
+                status_code = system("{}\\setup.msi".format(getenv("Temp")))  # 0 for good exit.
     else:
         print("{}{}[xpykg:error]:{} package index not found.. maybe run sync".format(Style.BRIGHT, Fore.RED, Fore.RESET))
 
-def append_to_install(pkgname: str, version: str, remover: str):
+        # now append to install and categorize uninstallers as normal, nullsoft or custom
+
+    if status_code == 0:
+        print("{}{}[xpykg:sucess]:{} {}{}{} installed sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+        if "isUninstallerByNullsoft" in list(contents[package].keys()): # determine nullsoft uninstallers:
+            append_to_install(package, contents[package]['version'], contents[package]['remover'], "UninstallerByNullsoft")
+        else: # for normal uninstallers
+            append_to_install(package, contents[package]['version'], contents[package]['remover'], "Normal")
+
+        return 0
+    else:
+        print("{}{}[xpykg:error]: {}{} failed to install".format(Style.BRIGHT, Fore.RED, Fore.YELLOW, Fore.RESET))
+        return 1
+        
+def append_to_install(pkgname: str, version: str, remover: str, uninstall_type: str):
     '''
     append_to_install(pkgname, version, remover): append package to install database
     '''
     if isfile("C:\\Program Files\\xpykg\\installed-packages") == False:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'w') as db:
-            db.write("\n{}".format([pkgname, version, remover]))
+            db.write("{}".format([pkgname, version, remover, uninstall_type]))
         db.close()
     else:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'a+') as db:
-            db.write("\n{}".format([pkgname, version, remover]))
+            db.write("\n{}".format([pkgname, version, remover, uninstall_type]))
         db.close()
 
 def is_installed(pkgname: str):
@@ -219,10 +223,12 @@ def uninstall_package(pkgname: str):
             contents = ipkg.read().splitlines()
             index = 0
             remover = ""
+            uninstall_type = ""
             for i in contents:
                 if literal_eval(i)[0] == pkgname:
                     index = contents.index(i)
                     remover = literal_eval(i)[2]
+                    uninstall_type = literal_eval(i)[3]
                     break
                 
             remove = remover.split("\\")
@@ -230,13 +236,15 @@ def uninstall_package(pkgname: str):
             chdir(arr_to_str(remove, "\\"))
             
             remover = remover.split("\\")[len(remover.split("\\"))-1]
-            
-            if system(remover) == 0:
+            #remove_status = system(remover) 
+
+            if system(remover) == 0 and uninstall_type == "Normal":
                 contents.pop(index)
                 ncontent = ""
                 for j in contents:
                     ncontent = ncontent+j
-                
+
+                print(ncontent) 
                 ipkg.seek(0)
                 ipkg.write(ncontent)
                 ipkg.truncate()
