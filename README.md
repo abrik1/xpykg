@@ -24,3 +24,7 @@ see packages.csv
 
 ## docs:
 see github's wiki
+
+# contact:
+### discord server:
+https://discord.gg/nrawuXjz8
