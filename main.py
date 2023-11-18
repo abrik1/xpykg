@@ -10,9 +10,12 @@ from os import system, mkdir, getenv, chdir
 from os.path import isfile, isdir
 from ast import literal_eval
 from colorama import init, Fore, Style
+from wmi import WMI
+from time import sleep
 
 xpykg_version = "0.1" 
 init() # initialize colorama
+wmi = WMI()
 
 def sync_database(): 
     '''
@@ -236,25 +239,51 @@ def uninstall_package(pkgname: str):
             chdir(arr_to_str(remove, "\\"))
             
             remover = remover.split("\\")[len(remover.split("\\"))-1]
-            #remove_status = system(remover) 
 
-            if system(remover) == 0 and uninstall_type == "Normal":
-                contents.pop(index)
-                ncontent = ""
-                for j in contents:
-                    ncontent = ncontent+j
+            print("{}{}[xpykg:note]:{} loading remover for package {}{}{}".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
+            remove_status = system(remover)
+            pkg_removed = False 
 
-                print(ncontent) 
-                ipkg.seek(0)
-                ipkg.write(ncontent)
-                ipkg.truncate()
-                ipkg.close()
-                print("{}{}[xpykg:sucess]:{} package {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
-                return 0
+            if remove_status == 0 and uninstall_type == "Normal":
+                pkg_removed = True
+                #contents.pop(index)
+                #ncontent = ""
+                #for j in contents:
+                    #ncontent = ncontent+j
+
+                #print(ncontent) 
+                #ipkg.seek(0)
+                #ipkg.write(ncontent)
+                #ipkg.truncate()
+                #ipkg.close()
+                #print("{}{}[xpykg:sucess]:{} package {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
+                #return 0
+            elif remove_status == 0 and uninstall_type == "UninstallerByNullsoft":
+                # using wmi check that Un_a.exe is running or not
+                sleep(1)
+                while True:
+                    prcs = [] # array to store processes running
+                    for process in wmi.Win32_Process():
+                        prcs.append(process.Name)
+
+                    if not "Un_A.exe" in prcs:
+                        break # assumption that it has been uninstalled..
+                
+                if isfile(remover) == True:
+                   pkg_removed = False
+                else:
+                    pkg_removed = True 
             else:
-                print("[xpykg:error]: {} not removed".format(pkgname))
+                print("{}{}[xpykg:error]:{} {}{}{} not removed".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
                 ipkg.close()
                 return 1 
+            
+            if pkg_removed == False:
+                print("{}{}[xpykg:error]: {}{}{} not removed".format(Style.BRIGHT, Fore.RED, Fore.YELLOW, pkgname, Fore.RESET))
+                return 1
+            else:
+                print("{}{}[xpykg:sucess]: {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.YELLOW, pkgname, Fore.RESET))
+                return 0
     else:
         print("{}{}[xpykg:error]:{} package {}{}{} not installed".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
         return 1
