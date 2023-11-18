@@ -246,18 +246,6 @@ def uninstall_package(pkgname: str):
 
             if remove_status == 0 and uninstall_type == "Normal":
                 pkg_removed = True
-                #contents.pop(index)
-                #ncontent = ""
-                #for j in contents:
-                    #ncontent = ncontent+j
-
-                #print(ncontent) 
-                #ipkg.seek(0)
-                #ipkg.write(ncontent)
-                #ipkg.truncate()
-                #ipkg.close()
-                #print("{}{}[xpykg:sucess]:{} package {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
-                #return 0
             elif remove_status == 0 and uninstall_type == "UninstallerByNullsoft":
                 # using wmi check that Un_a.exe is running or not
                 sleep(1)
@@ -283,6 +271,15 @@ def uninstall_package(pkgname: str):
                 return 1
             else:
                 print("{}{}[xpykg:sucess]: {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.YELLOW, pkgname, Fore.RESET))
+                contents.pop(index)
+                ncontent = ""
+                for j in contents:
+                    ncontent = ncontent+j+"\n"
+
+                ipkg.seek(0)
+                ipkg.write(ncontent)
+                ipkg.truncate()
+                ipkg.close()
                 return 0
     else:
         print("{}{}[xpykg:error]:{} package {}{}{} not installed".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, pkgname, Fore.RESET))
