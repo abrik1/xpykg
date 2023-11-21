@@ -12,6 +12,7 @@ from ast import literal_eval
 from colorama import init, Fore, Style
 from wmi import WMI
 from time import sleep
+from platform import architecture
 
 xpykg_version = "0.1" 
 init() # initialize colorama
@@ -153,9 +154,15 @@ def install_package(package: str):
     if status_code == 0:
         print("{}{}[xpykg:sucess]:{} {}{}{} installed sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
         if "isUninstallerByNullsoft" in list(contents[package].keys()): # determine nullsoft uninstallers:
-            append_to_install(package, contents[package]['version'], contents[package]['remover'], "UninstallerByNullsoft")
+            if architecture()[0] == "64bit":
+                append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "UninstallerByNullsoft")
+            else:
+                append_to_install(package, contents[package]['version'], contents[package]['remover'], "UninstallerByNullsoft")
         else: # for normal uninstallers
-            append_to_install(package, contents[package]['version'], contents[package]['remover'], "Normal")
+            if architecture()[0] == "64bit":
+                append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "Normal")
+            else:
+                append_to_install(package, contents[package]['version'], contents[package]['remover'], "Normal")
 
         return 0
     else:
@@ -369,7 +376,7 @@ version: show xpykg version''')
                 uninstall_package(argv[2])
             else:
                 for i in range(2, len(argv)):
-                    print(argv[i])
+                    uninstall_package(argv[i])
         elif argv[1] in ["-U", "upgrade", "--upgrade"]:
             upgrade_packages()
         else:
