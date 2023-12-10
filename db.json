@@ -49,4 +49,10 @@
         "remover": "C:\\Program Files\\Scratch\\uninstall.exe",
         "isUninstallerByNullsoft": true
     },
+    "mirc":{
+        "version": "7.75",
+        "source": "https://www.mirc.com/downloads/mirc/42/mirc775.exe",
+        "remover": "C:\\Program Files\\mIRC\\uninstall.exe",
+        "isUninstallerByNullsoft": true
+    }
 }
