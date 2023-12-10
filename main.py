@@ -190,9 +190,12 @@ def is_installed(pkgname: str):
         with open("C:\\Program Files\\xpykg\\installed-packages", 'r') as database:
             contents = database.read()
             for i in contents.splitlines():
-                if literal_eval(i)[0] == pkgname:
-                    database.close()
-                    return True
+                try:
+                    if literal_eval(i)[0] == pkgname:
+                        database.close()
+                        return True
+                except SyntaxError:
+                    continue
                 
         database.close()
         return False
@@ -235,11 +238,14 @@ def uninstall_package(pkgname: str):
             remover = ""
             uninstall_type = ""
             for i in contents:
-                if literal_eval(i)[0] == pkgname:
-                    index = contents.index(i)
-                    remover = literal_eval(i)[2]
-                    uninstall_type = literal_eval(i)[3]
-                    break
+                try:
+                    if literal_eval(i)[0] == pkgname:
+                        index = contents.index(i)
+                        remover = literal_eval(i)[2]
+                        uninstall_type = literal_eval(i)[3]
+                        break
+                except SyntaxError:
+                    continue
                 
             remove = remover.split("\\")
             remove.pop(len(remove)-1)

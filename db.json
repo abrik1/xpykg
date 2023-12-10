@@ -1,35 +1,41 @@
 {
     "firefox": {
-	"version": "52.0.9",
-	 "source": "https://ftp.mozilla.org/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox%20Setup%2052.9.0esr.exe",
-	 "remover": "C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe",
-	 "isUninstallerByNullsoft":  true
+        "version": "52.0.9",
+        "source": "https://ftp.mozilla.org/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox%20Setup%2052.9.0esr.exe",
+        "remover": "C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe",
+	      "isUninstallerByNullsoft":  true
     },
     "emacs": {
         "version": "27.2",
         "source": "http://ftp.gnu.org/gnu/emacs/windows/emacs-27/emacs-27.2-i686-installer.exe",
         "remover": "C:\\Program Files\\Emacs\\Uninstall.exe",
-	"isUninstallerByNullsoft":  true
+	      "isUninstallerByNullsoft":  true
     },
     "vim": {
         "version": "9.0",
         "source": "https://ftp.nluug.nl/pub/vim/pc/gvim90.exe",
         "remover": "C:\\Program Files\\Vim\\vim90\\uninstall-gui.exe",
-	"isUninstallerByNullsoft":  true
+	      "isUninstallerByNullsoft":  true
     },
     "sublime-text-3": {
         "version": "3.3211",
         "source": "https://download.sublimetext.com/Sublime%20Text%20Build%203211%20Setup.exe",
         "remover": "C:\\Program Files\\Sublime Text 3\\unins000.exe"
     },
-  "7zip": {
-    "version": "23.01",
-    "source": "https://www.7-zip.org/a/7z2301.exe",
-    "remover": "C:\\Program Files\\7-Zip\\Uninstall.exe"
-  },
-  "peazip": {
-    "version": "9.5",
-    "source": "https://github.com/peazip/PeaZip/releases/download/9.5.0/peazip-9.5.0.WINDOWS.exe",
-    "remover": "C:\\Program Files\\Peazip\\unins000.exe"
-  }
+    "7zip": {
+        "version": "23.01",
+        "source": "https://www.7-zip.org/a/7z2301.exe",
+        "remover": "C:\\Program Files\\7-Zip\\Uninstall.exe"
+    },
+    "peazip": {
+        "version": "9.5",
+        "source": "https://github.com/peazip/PeaZip/releases/download/9.5.0/peazip-9.5.0.WINDOWS.exe",
+        "remover": "C:\\Program Files\\Peazip\\unins000.exe"
+    },
+    "notepad++":{
+        "version": "7.9.2",
+        "source": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v7.9.2/npp.7.9.2.Installer.exe",
+        "remover": "C:\\Program Files\\Notepad++\\uninstall.exe",
+        "isUninstallerByNullsoft": true
+    }
 }
