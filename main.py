@@ -10,7 +10,11 @@ from os import system, mkdir, getenv, chdir
 from os.path import isfile, isdir
 from ast import literal_eval
 from colorama import init, Fore, Style
-from wmi import WMI
+try:
+    from wmi import WMI
+except:
+    print("{}{}[xpykg:error]:{} unable to initialize {}WMI{}".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, Fore.RESET))
+    exit(1)
 from time import sleep
 from platform import architecture
 
@@ -387,7 +391,13 @@ version: show xpykg version''')
             upgrade_packages()
         else:
             print("{}{}[xpykg:error]:{} invalid argument or not sufficient arguements".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+            exit(1)
     except IndexError:
         print("{}{}[xpykg:error]:{} invalid argument or not sufficient arguments".format(Style.BRIGHT, Fore.RED ,Fore.RESET))
+        exit(1)
     except KeyboardInterrupt:
         print("{}{}[xpykg:error]:{} keyboard exit detected".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+        exit(1)
+    except PermissionError:
+        print("{}{}[xpykg:error]:{} please run xpykg as Administrator".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+        exit(1)
