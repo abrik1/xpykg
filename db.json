@@ -43,4 +43,10 @@
         "source": "https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/Git-2.10.0-32-bit.exe",
         "remover": "C:\\Program Files\\Git\\unins000.exe"
     },
+    "scratch":{
+        "version": "1.4",
+        "source": "https://download.scratch.mit.edu/ScratchInstaller1.4.exe",
+        "remover": "C:\\Program Files\\Scratch\\uninstall.exe",
+        "isUninstallerByNullsoft": true
+    },
 }
