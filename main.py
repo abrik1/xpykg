@@ -265,13 +265,19 @@ def uninstall_package(pkgname: str):
                 pkg_removed = True
             elif remove_status == 0 and uninstall_type == "UninstallerByNullsoft":
                 # using wmi check that Un_a.exe is running or not
-                sleep(1)
+                sleep(5)
+                bin = ""
                 while True:
                     prcs = [] # array to store processes running
                     for process in wmi.Win32_Process():
                         prcs.append(process.Name)
 
-                    if not "Un_A.exe" in prcs:
+                    if "Un_A.exe" in prcs: 
+                        bin = "Un_a.exe"
+                    elif "Au_.exe" in prcs:
+                        bin = "Au_.exe"
+                    
+                    if (bin in prcs) == False:
                         break # assumption that it has been uninstalled..
                 
                 if isfile(remover) == True:
