@@ -37,5 +37,10 @@
         "source": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v7.9.2/npp.7.9.2.Installer.exe",
         "remover": "C:\\Program Files\\Notepad++\\uninstall.exe",
         "isUninstallerByNullsoft": true
-    }
+    },
+    "git":{
+        "version": "2.10.0",
+        "source": "https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/Git-2.10.0-32-bit.exe",
+        "remover": "C:\\Program Files\\Git\\unins000.exe"
+    },
 }
