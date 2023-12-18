@@ -27,5 +27,6 @@ see packages.csv
 see github's wiki
 
 # contact:
-### discord server:
-https://discord.gg/nrawuXjz8
+
+${\color{purple}discord\ server\colon}$
+https://discord.gg/5Jwd7Sch88
