@@ -54,5 +54,22 @@
         "source": "https://www.mirc.com/downloads/mirc/42/mirc775.exe",
         "remover": "C:\\Program Files\\mIRC\\uninstall.exe",
         "nullsoftUninstaller": true
+    },
+    "mypal29": {
+        "version": "29.3.0",
+        "source": "https://www.mypal-browser.org/release/mypal-29.3.0.win32.installer.exe",
+        "remover": "C:\\Program Files\\Mypal\\uninstall\\helper.exe",
+        "nullsoftUninstaller": true
+    },
+    "onlyoffice": {
+        "version":"7.5",
+        "source": "https://download.onlyoffice.com/install/desktop/editors/windows/distrib/onlyoffice/DesktopEditors_x86_xp.exe",
+        "remover": "C:\\Program Files\\ONLYOFFICE\\DesktopEditors\\unins000.exe",
+        "packagerNotes": "Please install Microsoft Visual C++ 2015 Redistributable for missing dll errors on startup"
+    },
+    "mtpaint": {
+        "version": "3.50",
+        "source": "https://master.dl.sourceforge.net/project/mtpaint/mtpaint/3.50/mtpaint-3.50-w32-setup.exe",
+        "remover": "C:\\Program Files\\mtPaint-3.50\\unins000.exe"
     }
 }
