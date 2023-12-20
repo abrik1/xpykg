@@ -18,9 +18,9 @@ except:
 from time import sleep
 from platform import architecture
 
-xpykg_version = "0.1" 
+xpykg_version = "0.1" # xpykg version
 init() # colorama
-wmi = WMI()
+wmi = WMI() # wmi
 
 def sync_database(): 
     '''
@@ -167,6 +167,9 @@ def install_package(package: str):
                 append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "Normal")
             else:
                 append_to_install(package, contents[package]['version'], contents[package]['remover'], "Normal")
+
+        if "packagerNotes" in list(contents[package].keys()): # notes by the packager:
+            print("{}[xpykg:packager notes]: {}".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, contents[package]["packagerNotes"]))
 
         return 0
     else:
