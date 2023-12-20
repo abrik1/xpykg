@@ -3,19 +3,19 @@
         "version": "52.0.9",
         "source": "https://ftp.mozilla.org/pub/firefox/releases/52.9.0esr/win32/en-US/Firefox%20Setup%2052.9.0esr.exe",
         "remover": "C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe",
-	      "isUninstallerByNullsoft":  true
+        "nullsoftUninstaller":  true
     },
     "emacs": {
         "version": "27.2",
         "source": "http://ftp.gnu.org/gnu/emacs/windows/emacs-27/emacs-27.2-i686-installer.exe",
         "remover": "C:\\Program Files\\Emacs\\Uninstall.exe",
-	      "isUninstallerByNullsoft":  true
+        "nullsoftUninstaller":  true
     },
     "vim": {
         "version": "9.0",
         "source": "https://ftp.nluug.nl/pub/vim/pc/gvim90.exe",
         "remover": "C:\\Program Files\\Vim\\vim90\\uninstall-gui.exe",
-	      "isUninstallerByNullsoft":  true
+        "nullsoftUninstaller":  true
     },
     "sublime-text-3": {
         "version": "3.3211",
@@ -32,27 +32,27 @@
         "source": "https://github.com/peazip/PeaZip/releases/download/9.5.0/peazip-9.5.0.WINDOWS.exe",
         "remover": "C:\\Program Files\\Peazip\\unins000.exe"
     },
-    "notepad++":{
+    "notepad++": {
         "version": "7.9.2",
         "source": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v7.9.2/npp.7.9.2.Installer.exe",
         "remover": "C:\\Program Files\\Notepad++\\uninstall.exe",
-        "isUninstallerByNullsoft": true
+        "nullsoftUninstaller": true
     },
-    "git":{
+    "git": {
         "version": "2.10.0",
         "source": "https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/Git-2.10.0-32-bit.exe",
         "remover": "C:\\Program Files\\Git\\unins000.exe"
     },
-    "scratch":{
+    "scratch": {
         "version": "1.4",
         "source": "https://download.scratch.mit.edu/ScratchInstaller1.4.exe",
         "remover": "C:\\Program Files\\Scratch\\uninstall.exe",
-        "isUninstallerByNullsoft": true
+        "nullsoftUninstaller": true
     },
-    "mirc":{
+    "mirc": {
         "version": "7.75",
         "source": "https://www.mirc.com/downloads/mirc/42/mirc775.exe",
         "remover": "C:\\Program Files\\mIRC\\uninstall.exe",
-        "isUninstallerByNullsoft": true
+        "nullsoftUninstaller": true
     }
 }

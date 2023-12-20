@@ -1,5 +1,5 @@
 '''
-xpykg: a script to automate install/update/uninstall for Windows XP  
+xpykg: manage software packages on Windows XP
 '''
 
 from json import loads, dumps
@@ -19,7 +19,7 @@ from time import sleep
 from platform import architecture
 
 xpykg_version = "0.1" 
-init() # initialize colorama
+init() # colorama
 wmi = WMI()
 
 def sync_database(): 
@@ -38,10 +38,10 @@ def sync_database():
                 xpykg_db.close()
                 return 0
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
-                print("{}{}[xpykg:error]{}: database failed to download.. maybe try again later".format(Style.BRIGHT ,Fore.RED, Fore.RESET))
+                print("{}{}[xpykg:error]{}: database failed to download... please try again later".format(Style.BRIGHT ,Fore.RED, Fore.RESET))
                 xpykg_db.close()
                 return 1
-        print("{}{}[xpykg:sucess]:{} database written".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
+        print("{}{}[xpykg:success]:{} database written".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
         return 0
     else:
         with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpykg_db:
@@ -56,10 +56,10 @@ def sync_database():
                     xpykg_db.write(info.content.decode('utf-8'))
                     xpykg_db.truncate()
                     xpykg_db.close()
-                    print("{}{}[xpykg:sucess]:{} database updated".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
+                    print("{}{}[xpykg:success]:{} database updated".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
                     return 0
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
-                print("{}{}[xpykg:error]:{} database failed to download.. maybe try again later".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+                print("{}{}[xpykg:error]:{} database failed to download... please try again later".format(Style.BRIGHT, Fore.RED, Fore.RESET))
                 xpykg_db.close()
                 return 1
         
@@ -77,11 +77,11 @@ def list_packages():
                     print("{} {}".format(i, contents[i]['version']))
         db.close()
     else:
-        print("[xpykg:error]: package index not found.. maybe sync the database to fix it")
+        print("[xpykg:error]: package index not found... please sync the database")
 
 def search_packages(query: str):
     '''
-    search_packages(query: str): search packages matching to query  
+    search_packages(query: str): search packages that match a query  
     '''
 
     if isfile("C:\\Program Files\\xpykg\\db.json") == True:
@@ -107,7 +107,7 @@ def search_packages(query: str):
                 print("{}{}[xpykg:error]:{} no pkgs similar to {}{}{}".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, query, Fore.RESET))            
         db.close()
     else:
-        print("{}{}[xpykg:error]:{} database not found.. maybe sync it.".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+        print("{}{}[xpykg:error]:{} database not found... please sync the database".format(Style.BRIGHT, Fore.RED, Fore.RESET))
 
 def install_package(package: str):
     '''
@@ -119,7 +119,7 @@ def install_package(package: str):
             contents = loads(db.read())
             
             if package not in list(contents.keys()):
-                print("{}{}[xpykg:error]:{} package {}{}{} not found in database.. maybe sync database or search it".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+                print("{}{}[xpykg:error]:{} package {}{}{} not found in database... sync the database or search for a similar package".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
                 db.close()
                 return 1
 
@@ -128,7 +128,7 @@ def install_package(package: str):
             try:
                 exe_contents = get(contents[package]['source'])
             except (MissingSchema, ConnectionError, ConnectionAbortedError, ConnectTimeout, ConnectionRefusedError, ConnectionResetError):
-                print("{}{}[xpykg:error]:{} setup.exe for package {}{}{} failed to download.. maybe try again later".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+                print("{}{}[xpykg:error]:{} setup.exe for package {}{}{} failed to download... please try again later".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
                 return 1
 
             # Windows executables can either be in .exe or in .msi 
@@ -151,17 +151,17 @@ def install_package(package: str):
 
                 status_code = system("{}\\setup.msi".format(getenv("Temp")))  # 0 for good exit.
     else:
-        print("{}{}[xpykg:error]:{} package index not found.. maybe run sync".format(Style.BRIGHT, Fore.RED, Fore.RESET))
+        print("{}{}[xpykg:error]:{} package index not found... maybe sync the database".format(Style.BRIGHT, Fore.RED, Fore.RESET))
 
         # now append to install and categorize uninstallers as normal, nullsoft or custom
 
     if status_code == 0:
-        print("{}{}[xpykg:sucess]:{} {}{}{} installed sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
-        if "isUninstallerByNullsoft" in list(contents[package].keys()): # determine nullsoft uninstallers:
+        print("{}{}[xpykg:success]:{} {}{}{} installed successfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+        if "nullsoftUninstaller" in list(contents[package].keys()): # determine nullsoft uninstallers:
             if architecture()[0] == "64bit":
-                append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "UninstallerByNullsoft")
+                append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "nullsoftUninstaller")
             else:
-                append_to_install(package, contents[package]['version'], contents[package]['remover'], "UninstallerByNullsoft")
+                append_to_install(package, contents[package]['version'], contents[package]['remover'], "nullsoftUninstaller")
         else: # for normal uninstallers
             if architecture()[0] == "64bit":
                 append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "Normal")
@@ -188,7 +188,8 @@ def append_to_install(pkgname: str, version: str, remover: str, uninstall_type: 
 
 def is_installed(pkgname: str):
     '''
-    is_installed(pkgname) -> True/False.. this function determines that a package is installed or not
+    is_installed(pkgname) -> True/False
+    determines whether a package is installed
     '''
     if isfile("C:\\Program Files\\xpykg\\installed-packages") == True:
         with open("C:\\Program Files\\xpykg\\installed-packages", 'r') as database:
@@ -208,7 +209,8 @@ def is_installed(pkgname: str):
 
 def get_installed_package_version(pkgname: str):
     '''
-    get_installed_package_version(pkgname).. if pkgname is installed by xpykg then return which version is installed by xpykg
+    get_installed_package_version(pkgname)
+    if pkgname is installed by xpykg, return its version
     '''
 
     if is_installed(pkgname) == True:
@@ -222,9 +224,6 @@ def get_installed_package_version(pkgname: str):
         return 1 # bad output
 
 def arr_to_str(arr, optchar: str):
-    '''
-    arr_to_str().. converts
-    '''
     nstr = ""
     for i in arr:
         nstr = nstr+i+optchar
@@ -263,7 +262,7 @@ def uninstall_package(pkgname: str):
 
             if remove_status == 0 and uninstall_type == "Normal":
                 pkg_removed = True
-            elif remove_status == 0 and uninstall_type == "UninstallerByNullsoft":
+            elif remove_status == 0 and uninstall_type == "nullsoftUninstaller":
                 # using wmi check that Un_a.exe is running or not
                 sleep(5)
                 bin = ""
@@ -293,7 +292,7 @@ def uninstall_package(pkgname: str):
                 print("{}{}[xpykg:error]: {}{}{} not removed".format(Style.BRIGHT, Fore.RED, Fore.YELLOW, pkgname, Fore.RESET))
                 return 1
             else:
-                print("{}{}[xpykg:sucess]: {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.YELLOW, pkgname, Fore.RESET))
+                print("{}{}[xpykg:success]: {}{}{} removed".format(Style.BRIGHT, Fore.GREEN, Fore.YELLOW, pkgname, Fore.RESET))
                 contents.pop(index)
                 ncontent = ""
                 for j in contents:
@@ -310,7 +309,7 @@ def uninstall_package(pkgname: str):
 
 def vtoi(version: str):
     '''
-    vtoi(version): return version to an integer.. 22.10 -> 2210
+    vtoi(version): convert a version to an integer... 22.10 -> 2210
     '''
     
     ver = ""

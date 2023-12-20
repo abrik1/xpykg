@@ -1,32 +1,33 @@
-## xpykg - a package manager for windows xp using python 3.4
-xpykg is a script for Windows XP which installs software for XP(x86 currently) so that users dont have to look for random webpages for software. It downloads the setup.exe of the available softwares and then runs the setup.exe and for uninstall where uninstall.exe is saved according to that the program is removed...
+## xpykg - manage software packages for Windows XP
+xpykg is a script for Windows XP which is capable of installing software
+packages so that users don't have to look on random webpages for software.
+
+xpykg downloads the setup.exe of the software package and then runs it.
+It also keeps track of the location of the uninstaller executable so that
+the user may easily uninstall the package when they need to.
 
 ### requirements:
-- python 3.4
+- Python 3.4
+ - requests 2.20
+ - colorama (colors are cool)
+ - wmi (for Un_A.exe detection)
 
-#### python libs:
-- json[in python 3.4]
-- requests 2.20 or something
-- colorama[colors are cool]
-- wmi(for Un_A.exe detection)
-
-**NOTE**: right now it works only on XP(x86 SP3 and x64 SP2(DB needs some changes)) and drive letter should be C:\
+**NOTE**: Right now it works only on Service Pack 3 for x86 and Service Pack 2 for x64 (DB needs some changes).
 
 ### todo:
-- [x] search works
-- [x] sync works
-- [x] list works
-- [x] install(msi/exe) works
-- [x] uninstall(some more testing)
-- [ ] upgrade(can detect which packages shall be upgraded)
+- [x] implement search
+- [x] implement sync
+- [x] implement list
+- [x] implement installing via msi or exe
+- [x] implement uninstalling
+ - WIP, needs some more testing
+- [ ] implement upgrading (needs to be able to detect which packages need upgrading)
 
 ### software:
-see packages.csv
+see db.json
 
 ## docs:
-see github's wiki
+see [the wiki](https://github.com/abrik1/xpykg/wiki)
 
 # contact:
-
-${\color{purple}discord\ server\colon}$
-https://discord.gg/5Jwd7Sch88
+Join the `#xpykg` channel on irc.libera.chat, or see the [${\color{purple}discord\ server\colon}$](https://discord.gg/5Jwd7Sch88)
