@@ -275,7 +275,7 @@ def uninstall_package(pkgname: str):
                         prcs.append(process.Name)
 
                     if "Un_A.exe" in prcs: 
-                        bin = "Un_a.exe"
+                        bin = "Un_A.exe"
                     elif "Au_.exe" in prcs:
                         bin = "Au_.exe"
                     
