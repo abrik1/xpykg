@@ -71,5 +71,11 @@
         "version": "3.50",
         "source": "https://master.dl.sourceforge.net/project/mtpaint/mtpaint/3.50/mtpaint-3.50-w32-setup.exe",
         "remover": "C:\\Program Files\\mtPaint-3.50\\unins000.exe"
+    },
+    "inkscape": {
+        "version": "0.92.3",
+        "source": "https://media.inkscape.org/dl/resources/file/inkscape-0.92.3-x86.exe",
+        "remover": "C:\\Program Files\\Inkscape\\Uninstall.exe",
+        "nullsoftUninstaller": true
     }
 }
