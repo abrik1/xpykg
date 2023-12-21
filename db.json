@@ -77,5 +77,11 @@
         "source": "https://media.inkscape.org/dl/resources/file/inkscape-0.92.3-x86.exe",
         "remover": "C:\\Program Files\\Inkscape\\Uninstall.exe",
         "nullsoftUninstaller": true
+    },
+    "pcsx2": {
+        "version": "1.4.0",
+        "source": "https://github.com/PCSX2/pcsx2/releases/download/v1.4.0/pcsx2-v1.4.0-windows-32bit-installer.exe",
+        "remover": "C:\\Program Files\\PCSX2 1.4.0\\Uninst-pcsx2 1.4.0.exe",
+        "nullsoftUninstaller": true
     }
 }
