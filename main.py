@@ -114,6 +114,18 @@ def install_package(package: str):
     install_package(package): install package to  
     '''
     
+    if is_installed(package) == True:
+        yn = input("{}{}[xpykg:note]:{} package {}{}{} is installed.. reinstall[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, package, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET))
+        if yn in ["N", "n", "no", "NO"]:
+            print("{}{}[xpykg:note]:{} package {}{}{} is already installed".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+            return 0
+        else:
+            if uninstall_package(package) == 0:
+                pass 
+            else:
+                print("{}{}[xpykg:error]:{} package {}{}{} not reinstalled".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
+                return 1
+
     if isfile("C:\\Program Files\\xpykg\\db.json") == True:
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
@@ -169,7 +181,7 @@ def install_package(package: str):
                 append_to_install(package, contents[package]['version'], contents[package]['remover'], "Normal")
 
         if "packagerNotes" in list(contents[package].keys()): # notes by the packager:
-            print("{}[xpykg:packager notes]: {}".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, contents[package]["packagerNotes"]))
+            print("{}{}[xpykg:packager notes]:{} {}".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, contents[package]["packagerNotes"]))
 
         return 0
     else:
@@ -266,7 +278,7 @@ def uninstall_package(pkgname: str):
             if remove_status == 0 and uninstall_type == "Normal":
                 pkg_removed = True
             elif remove_status == 0 and uninstall_type == "nullsoftUninstaller":
-                # using wmi check that Un_a.exe is running or not
+                # using wmi check that Un_A.exe is running or not
                 sleep(5)
                 bin = ""
                 while True:
@@ -361,6 +373,7 @@ def upgrade_packages():
     if choice not in ["y", "yes", "Y"]:
         print("{}{}[xpykg:error]:{} user decided not to proceed.".format(Style.BRIGHT, Fore.RED, Fore.RESET))
         return 1
+
 
 if __name__ == "__main__":
     try:
