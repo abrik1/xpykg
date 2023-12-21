@@ -67,11 +67,11 @@ def list_packages():
     '''
     list_packages(): shows the list of packages
     '''
-    if isfile("C:\\Program Files\\xpykg\\db.json") == True:
+    if isfile("C:\\Program Files\\xpykg\\db.json") :
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
             for i in list(contents.keys()):
-                if is_installed(i) == True:
+                if is_installed(i) :
                     print("{} {} [installed by xpykg]".format(i , contents[i]['version']))
                 else:
                     print("{} {}".format(i, contents[i]['version']))
@@ -84,7 +84,7 @@ def search_packages(query: str):
     search_packages(query: str): search packages that match a query  
     '''
 
-    if isfile("C:\\Program Files\\xpykg\\db.json") == True:
+    if isfile("C:\\Program Files\\xpykg\\db.json"):
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
             count = 0
@@ -98,7 +98,7 @@ def search_packages(query: str):
 
                 if len(matching) == len(query):
                     count = count + 1
-                    if is_installed(i) == True:
+                    if is_installed(i) :
                         print("{} {} [installed by xpykg]".format(i, contents[i]['version']))
                     else:
                         print("{} {}".format(i, contents[i]['version']))
@@ -114,7 +114,7 @@ def install_package(package: str):
     install_package(package): install package to  
     '''
     
-    if isfile("C:\\Program Files\\xpykg\\db.json") == True:
+    if isfile("C:\\Program Files\\xpykg\\db.json"):
         with open("C:\\Program Files\\xpykg\\db.json", 'r') as db:
             contents = loads(db.read())
             
@@ -194,7 +194,7 @@ def is_installed(pkgname: str):
     is_installed(pkgname) -> True/False
     determines whether a package is installed
     '''
-    if isfile("C:\\Program Files\\xpykg\\installed-packages") == True:
+    if isfile("C:\\Program Files\\xpykg\\installed-packages") :
         with open("C:\\Program Files\\xpykg\\installed-packages", 'r') as database:
             contents = database.read()
             for i in contents.splitlines():
@@ -216,7 +216,7 @@ def get_installed_package_version(pkgname: str):
     if pkgname is installed by xpykg, return its version
     '''
 
-    if is_installed(pkgname) == True:
+    if is_installed(pkgname) :
         with open("C:\\Program Files\\xpykg\\installed-packages", 'r') as database:
             contents = database.read().splitlines()
             for i in contents:
@@ -237,7 +237,7 @@ def uninstall_package(pkgname: str):
     '''
     uninstall_package(pkgname): remove pkgname if installed by xpykg  
     '''
-    if is_installed(pkgname) == True:
+    if is_installed(pkgname) :
         with open("C:\\Program Files\\xpykg\\installed-packages", 'r+') as ipkg:
             contents = ipkg.read().splitlines()
             index = 0
@@ -342,7 +342,7 @@ def upgrade_packages():
         contents = loads(db.read())
 
         for i in list(contents.keys()):
-            if is_installed(i) == True and vtoi(contents[i]['version']) > vtoi(get_installed_package_version(i)):
+            if is_installed(i)  and vtoi(contents[i]['version']) > vtoi(get_installed_package_version(i)):
                 version_list.append(i)
                 version.append(contents[i]['version'])
 
