@@ -12,7 +12,7 @@ from ast import literal_eval
 from colorama import init, Fore, Style
 try:
     from wmi import WMI
-except:
+except Exception:
     print("{}{}[xpykg:error]:{} unable to initialize {}WMI{}".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, Fore.RESET))
     exit(1)
 from time import sleep
@@ -115,7 +115,8 @@ def install_package(package: str):
     '''
     
     if is_installed(package) == True:
-        yn = input("{}{}[xpykg:note]:{} package {}{}{} is installed.. reinstall[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, package, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET))
+        print("{}{}[xpykg:input]:{} package {}{}{} is installed.. reinstall[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, Fore.YELLOW, package, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET), end="")
+        yn = input()
         if yn in ["N", "n", "no", "NO"]:
             print("{}{}[xpykg:note]:{} package {}{}{} is already installed".format(Style.BRIGHT, Fore.BLUE, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
             return 0
@@ -354,9 +355,12 @@ def upgrade_packages():
         contents = loads(db.read())
 
         for i in list(contents.keys()):
-            if is_installed(i) == True and vtoi(contents[i]['version']) > vtoi(get_installed_package_version(i)):
-                version_list.append(i)
-                version.append(contents[i]['version'])
+            try:
+                if is_installed(i) == True and vtoi(contents[i]['version']) > vtoi(get_installed_package_version(i)):
+                    version_list.append(i)
+                    version.append(contents[i]['version'])
+            except SyntaxError:
+                continue
 
     db.close()
 
@@ -364,16 +368,16 @@ def upgrade_packages():
         print("{}{}[xpykg:info]:{} all packages are up to date".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
         return 0
     else:
-        print("{}{}[xpykg:info]:{} these packages will be upgraded".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
+        print("{}{}[xpykg:info]: {}{}{} packages to be upgraded".format(Style.BRIGHT, Fore.BLUE, Fore.YELLOW, len(version), Fore.RESET))
         for i in version_list:
-            print("[-] {} {}{}{} -> {}{}{}".format(i, Fore.RED, get_installed_package_version(i), Fore.RESET, Fore.GREEN, version[version_list.index(i)], Fore.RESET))
+            print("[{}] {} {}{}{} -> {}{}{}".format(version_list.index(i)+1, i, Fore.RED, get_installed_package_version(i), Fore.RESET, Fore.GREEN, version[version_list.index(i)], Fore.RESET))
 
-    choice = input("{}{}[xpykg:input]:{} proceed[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET))
-    
+    print("{}{}[xpykg:input]:{} proceed[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET), end='')
+    choice = input()
+
     if choice not in ["y", "yes", "Y"]:
         print("{}{}[xpykg:error]:{} user decided not to proceed.".format(Style.BRIGHT, Fore.RED, Fore.RESET))
         return 1
-
 
 if __name__ == "__main__":
     try:
