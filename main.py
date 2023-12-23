@@ -33,7 +33,7 @@ def sync_database():
         print("{}{}[xpykg:info]{}: downloading database".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
         with open("C:\\Program Files\\xpykg\\db.json", 'w') as xpykg_db:
             try:
-                info = get("https://raw.githubusercontent.com/abrik1/xpykg/main/db.json")
+                info = get("https://codeberg.org/abrik1/xpykg/raw/branch/main/db.json")
                 xpykg_db.write(info.content.decode('utf-8'))
                 xpykg_db.close()
                 return 0
@@ -46,7 +46,7 @@ def sync_database():
     else:
         with open("C:\\Program Files\\xpykg\\db.json", 'r+') as xpykg_db:
             try:
-                info = get("https://raw.githubusercontent.com/abrik1/xpykg/main/db.json")
+                info = get("https://codeberg.org/abrik1/xpykg/raw/branch/main/db.json")
                 if xpykg_db.read() == info.content.decode('utf-8'):
                     print("{}{}[xpykg:note]:{} database up to date".format(Style.BRIGHT, Fore.BLUE, Fore.RESET))
                     xpykg_db.close()
