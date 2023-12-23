@@ -171,12 +171,12 @@ def install_package(package: str):
     if status_code == 0:
         print("{}{}[xpykg:success]:{} {}{}{} installed successfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET, Fore.YELLOW, package, Fore.RESET))
         if "nullsoftUninstaller" in list(contents[package].keys()): # determine nullsoft uninstallers:
-            if architecture()[0] == "64bit":
+            if architecture()[0] == "64bit" and "packagehas64" not in list(contents[package].keys()):
                 append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "nullsoftUninstaller")
             else:
                 append_to_install(package, contents[package]['version'], contents[package]['remover'], "nullsoftUninstaller")
         else: # for normal uninstallers
-            if architecture()[0] == "64bit":
+            if architecture()[0] == "64bit" and "packagehas64" not in list(contents[package].keys()):
                 append_to_install(package, contents[package]['version'], contents[package]['remover'].replace("Program Files", "Program Files (x86)"), "Normal")
             else:
                 append_to_install(package, contents[package]['version'], contents[package]['remover'], "Normal")
