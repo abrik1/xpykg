@@ -374,10 +374,32 @@ def upgrade_packages():
 
     print("{}{}[xpykg:input]:{} proceed[{}y{}/{}N{}]? ".format(Style.BRIGHT, Fore.MAGENTA, Fore.RESET, Fore.GREEN, Fore.RESET, Fore.RED, Fore.RESET), end='')
     choice = input()
+    failed_packages = []
 
     if choice not in ["y", "yes", "Y"]:
         print("{}{}[xpykg:error]:{} user decided not to proceed.".format(Style.BRIGHT, Fore.RED, Fore.RESET))
         return 1
+    
+    for i in version_list:
+        print("{}{}[xpykg:info]: {}{}{}/{}{}{} removing old version and installing new version of package {}{}{}".format(Style.BRIGHT, Fore.BLUE, Fore.YELLOW, version_list.index(i)+1, Fore.RESET, Fore.YELLOW, len(version_list), Fore.RESET, Fore.YELLOW, i, Fore.RESET))
+        if uninstall_package(i) == 0:
+            if install_package(i) == 0:
+                continue
+            else:
+                print("{}{}[xpykg:error]:{} package {}{}{} failed to upgrade".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, i, Fore.RESET))
+                failed_packages.append(i)
+        else:
+            print("{}{}[xpykg:error]:{} package {}{}{} failed to upgrade".format(Style.BRIGHT, Fore.RED, Fore.RESET, Fore.YELLOW, i, Fore.RESET))
+            failed_packages.append(i)
+
+    if len(failed_packages) == 0:
+        print("{}{}[xpykg:success]:{} all packages were upgraded sucessfully".format(Style.BRIGHT, Fore.GREEN, Fore.RESET))
+    else:
+        with open("C:\\Program Files\\xpykg\\pkgs_failed_to_upgrade", 'w') as file:
+            file.write(failed_packages)
+            file.close()
+
+        print("{}{}[xpykg:error]:{} some packages failed to upgrade".format(Style.BRIGHT, Fore.RED, Fore.RESET))
 
 if __name__ == "__main__":
     try:
