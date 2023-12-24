@@ -291,6 +291,8 @@ def uninstall_package(pkgname: str):
                         bin = "Un_A.exe"
                     elif "Au_.exe" in prcs:
                         bin = "Au_.exe"
+                    elif "Uninst.exe" in prcs: # 7zip has a very similar uninstller to NSIS Installers.
+                        bin = "Uninst.exe"
                     
                     if (bin in prcs) == False:
                         break # assumption that it has been uninstalled..
