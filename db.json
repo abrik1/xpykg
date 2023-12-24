@@ -89,5 +89,11 @@
         "source": "https://download.gimp.org/gimp/v2.8/windows/gimp-2.8.22-setup.exe",
         "remover": "C:\\Program Files\\GIMP 2\\uninst\\unins000.exe",
         "packagehas64": true
+    },
+    "devcpp": {
+        "version": "5.11",
+        "source": "https://sourceforge.net/projects/orwelldevcpp/files/Setup%20Releases/Dev-Cpp%205.11%20TDM-GCC%204.9.2%20Setup.exe",
+        "remover": "C:\\Program Files\\Dev-Cpp\\uninstall.exe",
+        "nullsoftUninstaller": true
     }
 }
