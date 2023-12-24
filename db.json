@@ -106,5 +106,10 @@
         "source": "https://sourceforge.net/projects/scribus/files/scribus/1.4.8/scribus-1.4.8-windows.exe",
         "remover": "C:\\Program Files\\Scribus 1.4.8\\uninst.exe",
         "nullsoftUninstaller": true
+    },
+    "audacity": {
+        "version": "2.0.6",
+        "source": "https://download.fosshub.com/Protected/expiretime=1703475157;badurl=aHR0cHM6Ly93d3cuZm9zc2h1Yi5jb20vaHR0cHM6JiN4MkY7JiN4MkY7Zm9zc2h1Yi5jb20mI3gyRjtBdWRhY2l0eS1vbGQuaHRtbA==/db1c66c58ed31f4e49ba3d29ae0d41af919d31e0fca28f3dc524100aba1a7936/5b7eee97e8058c20a7bbfcf4/5c4c66068c5dc16eac7cb7cf/audacity-win-2.0.6.exe",
+        "remover": "C:\\Program Files\\Audacity\\unins000.exe"
     }
 }
