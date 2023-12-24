@@ -64,8 +64,7 @@
     "onlyoffice": {
         "version":"7.5",
         "source": "https://download.onlyoffice.com/install/desktop/editors/windows/distrib/onlyoffice/DesktopEditors_x86_xp.exe",
-        "remover": "C:\\Program Files\\ONLYOFFICE\\DesktopEditors\\unins000.exe",
-        "packagerNotes": "Please install Microsoft Visual C++ 2015 Redistributable for missing dll errors on startup"
+        "remover": "C:\\Program Files\\ONLYOFFICE\\DesktopEditors\\unins000.exe"
     },
     "mtpaint": {
         "version": "3.50",
@@ -94,6 +93,18 @@
         "version": "5.11",
         "source": "https://sourceforge.net/projects/orwelldevcpp/files/Setup%20Releases/Dev-Cpp%205.11%20TDM-GCC%204.9.2%20Setup.exe",
         "remover": "C:\\Program Files\\Dev-Cpp\\uninstall.exe",
+        "nullsoftUninstaller": true
+    },
+    "codeblocks": {
+        "version": "17.12",
+        "source": "https://sourceforge.net/projects/codeblocks/files/Binaries/17.12/Windows/codeblocks-17.12mingw-setup.exe",
+        "remover": "C:\\Program Files\\CodeBlocks\\uninstall.exe",
+        "nullsoftUninstaller": true
+    },
+    "scribus": {
+        "version": "1.4.8",
+        "source": "https://sourceforge.net/projects/scribus/files/scribus/1.4.8/scribus-1.4.8-windows.exe",
+        "remover": "C:\\Program Files\\Scribus 1.4.8\\uninst.exe",
         "nullsoftUninstaller": true
     }
 }
