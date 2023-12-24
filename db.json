@@ -25,7 +25,8 @@
     "7zip": {
         "version": "23.01",
         "source": "https://www.7-zip.org/a/7z2301.exe",
-        "remover": "C:\\Program Files\\7-Zip\\Uninstall.exe"
+        "remover": "C:\\Program Files\\7-Zip\\Uninstall.exe",
+        "nullsoftUninstaller": true
     },
     "peazip": {
         "version": "9.5",
