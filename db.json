@@ -125,5 +125,11 @@
         "source": "https://sourceforge.net/projects/processhacker/files/processhacker2/processhacker-2.39-setup.exe",
         "remover": "C:\\Program Files\\Process Hacker 2\\unins000.exe",
         "packagehas64": true
+    },
+    "seamonkey": {
+        "version": "2.49.5",
+        "source": "https://archive.mozilla.org/pub/seamonkey/releases/2.49.5/win32/en-US/seamonkey-2.49.5.installer.exe",
+        "remover": "C:\\Program Files\\Seamonkey\\uninstall\\helper.exe",
+        "nullsoftUninstaller": true
     }
 }
