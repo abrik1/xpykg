@@ -293,7 +293,7 @@ def install_package(package: str):
                 )
             )
 
-            if "installNotes" in list(contents[package]).keys():
+            if "installNotes" in list(contents[package].keys())
                 print(
                     "{}{}[xpykg:notes before install]:{} {}".format(
                         Style.BRIGHT,
