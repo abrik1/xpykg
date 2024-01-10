@@ -21,8 +21,6 @@ the user may easily uninstall the package when they need to.
 - [x] implement installing via msi or exe
 - [x] implement uninstalling
  - WIP, needs some more testing
-- [x] implement upgrading 
- - add support to again upgrade packages which failed to upgrade in last run
 
 ### software:
 see db.json
