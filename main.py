@@ -597,11 +597,11 @@ def upgrade_packages():
     upgrade_packages(): this function is a dummy for the upgrade function in xpykg
     """
 
-        print(
-            "{}{}[xpykg:error]:{} xpykg no longer supports upgrading. remove and install the program to upgrade it.".format(
-                Style.BRIGHT, Fore.RED, Fore.RESET
-            )
-        return 1
+    print(
+        "{}{}[xpykg:warning]:{} xpykg no longer supports upgrading. remove and install the program to upgrade it.".format(
+            Style.BRIGHT, Fore.YELLOW, Fore.RESET
+        )
+    return 1
 
 
 if __name__ == "__main__":
