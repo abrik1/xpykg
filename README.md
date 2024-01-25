@@ -30,3 +30,6 @@ see [the wiki](https://github.com/abrik1/xpykg/wiki)
 
 # contact:
 Join the `#xpykg` channel on irc.libera.chat, or see the [${\color{purple}discord\ server\colon}$](https://discord.gg/5Jwd7Sch88)
+
+# MAINTAINERS NEEDED: 
+If you want to maintain `xpykg` then you can contact to `abrik1#0` or join `#xpykg` in libera.irc
