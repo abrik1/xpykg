@@ -131,5 +131,11 @@
         "source": "https://archive.mozilla.org/pub/seamonkey/releases/2.49.5/win32/en-US/seamonkey-2.49.5.installer.exe",
         "remover": "C:\\Program Files\\Seamonkey\\uninstall\\helper.exe",
         "nullsoftUninstaller": true
+    },
+    "thunderbird": {
+	    "version": "52.9.1",
+	    "source": "https://archive.mozilla.org/pub/thunderbird/releases/52.9.1/win32/en-US/Thunderbird%20Setup%2052.9.1.exe",
+	    "remover": "C:\\Program Files\\Mozilla Thunderbird\\uninstall\\helper.exe",
+	    "nullsoftUninstaller": true
     }
 }
